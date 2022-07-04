@@ -121,7 +121,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
           gap: '6ffpx',
         }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'row', gap: '6px' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'row', gap: '6px'}} marginTop={40}>
           {keys.split('').map((key, ix) => {
             return (
               <Box

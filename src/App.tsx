@@ -12,7 +12,7 @@ import { useCallback, useState } from 'react';
 import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { TypingKeyboard } from './components/TypingKeyboard';
-import vykas from './assets/smallbooba.mp4';
+import vykas from './assets/vykas.mp4';
 import seto from './assets/seto.jpg';
 
 export const App = () => {
@@ -50,21 +50,6 @@ export const App = () => {
             <Typography variant="h5" noWrap>
               Lost Ark Typing Practice
             </Typography>
-            <Button
-              variant="contained"
-              sx={{
-                background: easyMode ? 'crimson' : 'green',
-                '&:hover': {
-                  background: easyMode ? 'crimson' : 'green',
-                },
-                '&:active': {
-                  background: easyMode ? 'crimson' : 'green',
-                },
-              }}
-              onClick={() => setEasyMode((prev) => !prev)}
-            >
-              {easyMode ? 'Toggle hard mode' : 'Toggle easy mode'}
-            </Button>
             <TextField
               label="Allowed keys pool"
               InputLabelProps={{
@@ -91,11 +76,24 @@ export const App = () => {
           </Toolbar>
         </AppBar>
       </Slide>
-      <video autoPlay loop muted id='video'>
-        <source src=${vykas} type='video/mp4' />
+     <video id="background-video" autoPlay loop muted>
+        <source src={vykas} type='video/mp4' />
       </video>
-        <TypingKeyboard allowedKeys={allowedKeys} />
-      </Container>
+
+		<Container
+	sx={{
+          pt: 32,
+          pb: 2,
+          height: '100%',
+          minHeight: '100vh',
+          minWidth: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+		<TypingKeyboard allowedKeys={allowedKeys} />
+		</Container>
     </BrowserRouter>
   );
 };

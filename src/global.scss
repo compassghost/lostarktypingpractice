@@ -14,3 +14,12 @@ body,
   min-height: 100vh;
   min-width: 100%;
 }
+
+#background-video{
+	height: 100%;
+	width: 100%;
+	float: left;
+	top: 0;
+	padding: none;
+	position: fixed; /* optional depending on what you want to do in your app */
+}
