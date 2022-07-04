@@ -12,7 +12,7 @@ import { useCallback, useState } from 'react';
 import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { TypingKeyboard } from './components/TypingKeyboard';
-import vykas from './assets/vykas.jpg';
+import vykas from './assets/smallbooba.mp4';
 import seto from './assets/seto.jpg';
 
 export const App = () => {
@@ -109,22 +109,6 @@ export const App = () => {
         }}
       >
         <TypingKeyboard allowedKeys={allowedKeys} />
-        {!easyMode && (
-          <Box position="absolute" bottom="5%" right="6%">
-            <Typography variant="h6" color="white">
-              Vykas Fanart by
-              <br />
-              <a
-                style={{ color: 'rgba(100, 100, 250, 1)' }}
-                target="_blank"
-                rel="noreferrer"
-                href="https://www.pixiv.net/en/users/14279898"
-              >
-                Gg Amang | 까망베르까망
-              </a>
-            </Typography>
-          </Box>
-        )}
       </Container>
     </BrowserRouter>
   );
