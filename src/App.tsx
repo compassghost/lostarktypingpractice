@@ -91,23 +91,9 @@ export const App = () => {
           </Toolbar>
         </AppBar>
       </Slide>
-      <Container
-        disableGutters
-        component="main"
-        sx={{
-          backgroundImage: easyMode ? `url(${seto})` : `url(${vykas})`,
-          backgroundPosition: easyMode ? 'center 75%' : 'center 35%',
-          backgroundSize: easyMode ? '120%' : 'cover',
-          pt: 32,
-          pb: 2,
-          height: '100%',
-          minHeight: '100vh',
-          minWidth: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
+      <video autoPlay loop muted id='video'>
+        <source src=${vykas} type='video/mp4' />
+      </video>
         <TypingKeyboard allowedKeys={allowedKeys} />
       </Container>
     </BrowserRouter>
