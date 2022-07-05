@@ -210,10 +210,9 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
 
         <Box
           textAlign="center"
-          marginTop={10}
+          marginTop={1}
           sx={{ background: 'rgba(255,255,255,0.5)', borderRadius: '10px' }}
         >
-          <Typography variant="h6">Last 10 scores</Typography>
           <Typography variant="h6">
             {scores.length > 0 &&
               `Average time: ${(
@@ -225,18 +224,11 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
                   ) / 1000
               ).toFixed(2)}s`}
           </Typography>
-          <Typography variant="h6">
-            {scores.length > 0 &&
-              `Fail rate: ${(
-                (scores.filter((s) => !s.success).length / scores.length) *
-                100
-              ).toFixed(1)}%`}
-          </Typography>
           {scores.map((score, ix) => {
             return (
               <Typography
                 key={ix}
-                sx={{ color: score.success ? 'green' : 'red' }}
+                sx={{ color: score.success ? (score.time / 1000) > 4 ? 'yellow' : 'green' :'red' }}
               >
                 {(score.time / 1000).toFixed(2)}s
               </Typography>
