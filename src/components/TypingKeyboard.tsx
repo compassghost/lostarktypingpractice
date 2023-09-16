@@ -37,7 +37,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
   const resetGame = useCallback(() => {
     if (!allowedKeys || allowedKeys.length === 0) return;
     let newKeys = '';
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 8; i++) {
       newKeys += allowedKeys[Math.floor(Math.random() * allowedKeys.length)];
     }
     setCurrentKeyIndex(0);
@@ -121,7 +121,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
           gap: '6ffpx',
         }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'row', gap: '6px'}} marginTop={40}>
+        <Box sx={{ display: 'flex', flexDirection: 'row-reverse', gap: '6px', transform: 'rotateX(180deg)'}} marginTop={40}>
           {keys.split('').map((key, ix) => {
             return (
               <Box
@@ -129,7 +129,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
                 className={classes({
                   [css.shakeAnimation]: failedKeys.includes(ix),
                 })}
-                sx={{ position: 'relative' }}
+                sx={{ position: 'relative',}}
               >
                 <div
                   style={{
