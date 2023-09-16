@@ -150,7 +150,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: bool
                         ? '-1px 4px 25px -3px #e1dbb6'
                         : '-1px 4px 15px -3px rgba(0,0,0,0.43)',
                     transform:
-                      currentKeyIndex === ix ? 'translateY(-8px)' : undefined,
+                      currentKeyIndex === ix ? (thaemineMode ? 'translateY(-8px)' : 'translateY(8px)') : undefined,
                   }}
                 >
                   <Box
