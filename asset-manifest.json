@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/lostarktypingpractice/static/css/main.18716b4d.css",
-    "main.js": "/lostarktypingpractice/static/js/main.ac6f4a15.js",
+    "main.css": "/lostarktypingpractice/static/css/main.93dc5c45.css",
+    "main.js": "/lostarktypingpractice/static/js/main.23fe0326.js",
     "static/media/vykas.mp4": "/lostarktypingpractice/static/media/vykas.d3135eb8d660b3d30074.mp4",
     "static/media/star.png": "/lostarktypingpractice/static/media/star.77396f5de4c0aab5333b.png",
     "static/media/LabradorA-Medium.ttf": "/lostarktypingpractice/static/media/LabradorA-Medium.b351ef7f0855a251c46f.ttf",
@@ -9,11 +9,11 @@
     "static/media/keysound.mp3": "/lostarktypingpractice/static/media/keysound.f2019d97970dd34f88cb.mp3",
     "static/media/failsound.mp3": "/lostarktypingpractice/static/media/failsound.3198670a11bb9585ad9a.mp3",
     "index.html": "/lostarktypingpractice/index.html",
-    "main.18716b4d.css.map": "/lostarktypingpractice/static/css/main.18716b4d.css.map",
-    "main.ac6f4a15.js.map": "/lostarktypingpractice/static/js/main.ac6f4a15.js.map"
+    "main.93dc5c45.css.map": "/lostarktypingpractice/static/css/main.93dc5c45.css.map",
+    "main.23fe0326.js.map": "/lostarktypingpractice/static/js/main.23fe0326.js.map"
   },
   "entrypoints": [
-    "static/css/main.18716b4d.css",
-    "static/js/main.ac6f4a15.js"
+    "static/css/main.93dc5c45.css",
+    "static/js/main.23fe0326.js"
   ]
 }
