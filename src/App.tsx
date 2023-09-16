@@ -17,7 +17,7 @@ import seto from './assets/seto.jpg';
 
 export const App = () => {
   const [showAppBar, setShowAppBar] = useState(true);
-  const [easyMode, setEasyMode] = useState(false);
+  const [thaemineMode, setThaemineMode] = useState(true);
   const [allowedKeys, setAllowedKeys] = useState('qweasd');
 
   const handleScroll = useCallback(() => {
@@ -73,13 +73,33 @@ export const App = () => {
                 setAllowedKeys(e.target.value);
               }}
             />
+             <Button
+              variant="contained"
+              sx={{
+                background: thaemineMode ? 'black' : 'crimson',
+                '&:hover': {
+                  background: thaemineMode ? 'black' : 'crimson',
+                },
+                '&:active': {
+                  background: thaemineMode ? 'black' : 'crimson',
+                },
+              }}
+              onClick={() => {
+                   setThaemineMode((prev) => !prev);
+                   document.getElementById('background-video')!.style.display = thaemineMode ? 'none' : 'inline';
+                }
+              }
+            >
+              {thaemineMode ? 'Thaemine Mode' : 'Vykas Mode'}
+            </Button>
           </Toolbar>
         </AppBar>
       </Slide>
-     <video id="background-video" autoPlay loop muted>
-        <source src={vykas} type='video/mp4' />
-      </video>
 
+     <video id="background-video" autoPlay loop muted>
+        <source src={vykas} type='video/mp4'/>
+      </video>
+      
 		<Container
 	sx={{
           pt: 32,
@@ -92,7 +112,7 @@ export const App = () => {
           alignItems: 'center',
         }}
       >
-		<TypingKeyboard allowedKeys={allowedKeys} />
+		<TypingKeyboard allowedKeys={allowedKeys} thaemineMode={thaemineMode} />
 		</Container>
     </BrowserRouter>
   );

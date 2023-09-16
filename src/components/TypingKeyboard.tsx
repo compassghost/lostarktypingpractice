@@ -14,8 +14,8 @@ export interface Score {
   success: boolean;
 }
 
-export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
-  allowedKeys,
+export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: boolean}> = ({
+  allowedKeys, thaemineMode, 
 }) => {
   const [currentKeyIndex, setCurrentKeyIndex] = useState<number>(0);
   const [showSuccessText, setShowSuccessText] = useState(false);
@@ -37,19 +37,23 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
   const resetGame = useCallback(() => {
     if (!allowedKeys || allowedKeys.length === 0) return;
     let newKeys = '';
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < (thaemineMode ? 7 : 8); i++) {
       newKeys += allowedKeys[Math.floor(Math.random() * allowedKeys.length)];
     }
     setCurrentKeyIndex(0);
     setKeys(newKeys);
     setStartedTime(Date.now());
     setFailedKeys([]);
-  }, [setCurrentKeyIndex, setKeys, setStartedTime, setFailedKeys, allowedKeys]);
+  }, [setCurrentKeyIndex, setKeys, setStartedTime, setFailedKeys, allowedKeys, thaemineMode]);
 
   useEffect(() => {
     resetGame();
   }, [allowedKeys, resetGame]);
 
+  useEffect(() => {
+    resetGame();
+  }, [thaemineMode, resetGame]);
+  
   useEffect(() => {
     const handleKeyTyped = (e: KeyboardEvent) => {
       if (!allowedKeys.split('').includes(e.key.toLowerCase())) {
@@ -109,7 +113,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
 
     window.addEventListener('keydown', handleKeyTyped);
     return () => window.removeEventListener('keydown', handleKeyTyped);
-  }, [currentKeyIndex, failedKeys, keys, startedTime, allowedKeys, resetGame]);
+  }, [currentKeyIndex, failedKeys, keys, startedTime, allowedKeys, thaemineMode, resetGame]);
 
   return (
     <>
@@ -121,7 +125,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
           gap: '6ffpx',
         }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'row-reverse', gap: '6px', transform: 'rotateX(180deg)'}} marginTop={40}>
+        <Box sx={{ display: 'flex', flexDirection: thaemineMode ? 'row' : 'row-reverse', gap: '6px', transform: thaemineMode ? undefined: 'rotateX(180deg)'}} marginTop={40}>
           {keys.split('').map((key, ix) => {
             return (
               <Box
@@ -155,6 +159,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string }> = ({
                       top: '-3px',
                       width: '45px',
                       height: '45px',
+                      transform: thaemineMode ? undefined: 'rotateY(180deg)',
                       backgroundColor: failedKeys.includes(ix)
                         ? 'rgba(255, 50, 50, 1)'
                         : currentKeyIndex === ix
