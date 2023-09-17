@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Box,
   Button,
   Container,
   Slide,
@@ -13,7 +12,6 @@ import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { TypingKeyboard } from './components/TypingKeyboard';
 import vykas from './assets/vykas.mp4';
-import seto from './assets/seto.jpg';
 
 export const App = () => {
   const [showAppBar, setShowAppBar] = useState(true);

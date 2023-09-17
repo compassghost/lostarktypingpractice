@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useRef, useCallback, useEffect, useState } from 'react';
+import Countdown from 'react-countdown';
 import keySound from '../assets/keysound.mp3';
 import failSound from '../assets/failsound.mp3';
 import winSound from '../assets/winsound.mp3';
@@ -12,17 +13,29 @@ const classes = classNames.bind(css);
 export interface Score {
   time: number;
   success: boolean;
+  window: number;
 }
 
 export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: boolean}> = ({
   allowedKeys, thaemineMode, 
 }) => {
+  const [timer, setTimer] = useState(Date.now());
   const [currentKeyIndex, setCurrentKeyIndex] = useState<number>(0);
   const [showSuccessText, setShowSuccessText] = useState(false);
+  const [sameRound, setSameRound] = useState(false);
   const [keys, setKeys] = useState<string>('');
   const [startedTime, setStartedTime] = useState(Date.now());
   const [scores, setScores] = useState<Score[]>([]);
   const [failedKeys, setFailedKeys] = useState<number[]>([]);
+  const countdownRef = useRef<Countdown>(null);
+  const timerRef = useRef(timer);
+  const sameRoundRef = useRef(sameRound);
+  const thaemineTimer = 5;
+  const vykasTimer = 4;
+  
+  function getTimeWindow() {
+    return thaemineMode ? vykasTimer : thaemineTimer;
+  }
 
   useEffect(() => {
     if (scores.length > 10) {
@@ -33,6 +46,13 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: bool
       });
     }
   }, [scores]);
+  
+  useEffect(() => {
+    sameRoundRef.current = sameRound
+  }, [sameRound]);
+  
+
+
 
   const resetGame = useCallback(() => {
     if (!allowedKeys || allowedKeys.length === 0) return;
@@ -40,25 +60,34 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: bool
     for (let i = 0; i < (thaemineMode ? 7 : 8); i++) {
       newKeys += allowedKeys[Math.floor(Math.random() * allowedKeys.length)];
     }
+    
+    console.log(sameRoundRef.current);
+
+    if(!sameRoundRef.current) {
+        setStartedTime(Date.now());
+        setTimer(Date.now() + getTimeWindow() * 1000);
+        countdownRef!.current!.getApi().start();
+    }
+
     setCurrentKeyIndex(0);
     setKeys(newKeys);
-    setStartedTime(Date.now());
     setFailedKeys([]);
   }, [setCurrentKeyIndex, setKeys, setStartedTime, setFailedKeys, allowedKeys, thaemineMode]);
 
   useEffect(() => {
+    setSameRound(false);
     resetGame();
-  }, [allowedKeys, resetGame]);
-
-  useEffect(() => {
-    resetGame();
-  }, [thaemineMode, resetGame]);
+  }, [thaemineMode, allowedKeys, resetGame]);
+  
+  
   
   useEffect(() => {
     const handleKeyTyped = (e: KeyboardEvent) => {
+      setSameRound(true);
       if (!allowedKeys.split('').includes(e.key.toLowerCase())) {
         return;
       }
+      
       if ((e.target as any)?.type === 'text') return;
       if (currentKeyIndex > keys.length - 1) return;
       if (failedKeys.length > 0) return;
@@ -72,13 +101,16 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: bool
           const winSoundFx = new Audio(winSound);
           winSoundFx.playbackRate = 1.1;
           winSoundFx.play();
+          countdownRef!.current!.getApi().pause();
           setShowSuccessText(true);
+          
+          setSameRound(false);
           setTimeout(() => setShowSuccessText(false), 1000);
         }
       } else {
         const failSoundFx = new Audio(failSound);
         failSoundFx.playbackRate = 1;
-        failSoundFx.play();
+        failSoundFx.play()
         setFailedKeys([...failedKeys, currentKeyIndex]);
         setScores((prev) => {
           return [
@@ -86,12 +118,13 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: bool
             {
               time: Date.now() - startedTime,
               success: false,
+              window: getTimeWindow()
             },
           ];
         });
         setTimeout(() => {
           resetGame();
-        }, 1500);
+        }, 1000);
         return;
       }
 
@@ -102,6 +135,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: bool
             {
               time: Date.now() - startedTime,
               success: true,
+              window: getTimeWindow()
             },
           ];
         });
@@ -113,7 +147,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: bool
 
     window.addEventListener('keydown', handleKeyTyped);
     return () => window.removeEventListener('keydown', handleKeyTyped);
-  }, [currentKeyIndex, failedKeys, keys, startedTime, allowedKeys, thaemineMode, resetGame]);
+  }, [setTimer, setSameRound, currentKeyIndex, failedKeys, keys, startedTime, allowedKeys, thaemineMode, resetGame]);
 
   return (
     <>
@@ -218,6 +252,57 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: bool
           marginTop={1}
           sx={{ background: 'rgba(255,255,255,0.5)', borderRadius: '10px' }}
         >
+            <Countdown 
+                ref={countdownRef}
+                date={timer} 
+                renderer={props => 
+                
+                             <div style={{borderRadius: '10px', 
+                                          height: '18px',
+                                          display: 'block',
+                                          width: '100%',
+                                          background: 'black',
+                             
+                             }}>
+                             
+                             
+                             
+                             <div style={{
+                                       position: 'relative',
+                                       top: '1px',
+                                       left: '1px',
+                                       borderRadius: '10px', 
+                                       background: props.total/1000 > 1 ? 'cornflowerblue' : 'red',
+                                       height: '16px', 
+                                       display: 'block', 
+                                       width: props.total/(thaemineMode ? 40 : 50) + '%',
+
+                                       }}>
+                                       </div>
+
+                             <div style={{
+                                       position: 'relative',
+                                       top: '-19px',
+                                       left: '1px',
+                                       borderRadius: '10px', 
+                                       height: '16px', 
+                                       display: 'block', 
+                                       width: '100%',
+                                       color: props.total/1000 > 0 ? 'white' : 'red',
+                                       }}>
+                                       
+                                       {Math.round(props.total/100)/10}
+                                       </div>
+
+                                       
+                                       </div>
+                                       }
+                intervalDelay={10}
+                precision={3}
+                overtime={true}
+                
+                
+                />
           <Typography variant="h6">
             {scores.length > 0 &&
               `Average time: ${(
@@ -233,7 +318,7 @@ export const TypingKeyboard: React.FC<{ allowedKeys: string , thaemineMode: bool
             return (
               <Typography
                 key={ix}
-                sx={{ color: score.success ? (score.time / 1000) > 4 ? 'yellow' : 'green' :'red' }}
+                sx={{ color: score.success ? (score.time / 1000) > score.window ? 'yellow' : 'green' :'red' }}
               >
                 {(score.time / 1000).toFixed(2)}s
               </Typography>
